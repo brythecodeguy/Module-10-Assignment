@@ -182,3 +182,24 @@ def test_missing_password_registration(db_session):
     # Adjust the expected error message
     with pytest.raises(ValueError, match="Password must be at least 6 characters long"):
         User.register(db_session, test_data)
+        
+def test_register_invalid_email_raises_value_error(db_session):
+    bad_user_data = {
+        "first_name": "Bad",
+        "last_name": "Email",
+        "email": "not-an-email",
+        "username": "bademailuser",
+        "password": "GoodPass123",
+    }
+
+    with pytest.raises(ValueError):
+        User.register(db_session, bad_user_data)
+
+
+def test_authenticate_invalid_password_returns_none(db_session, fake_user_data):
+    fake_user_data["password"] = "TestPass123"
+    User.register(db_session, fake_user_data)
+    db_session.commit()
+
+    result = User.authenticate(db_session, fake_user_data["username"], "WrongPass123")
+    assert result is None
