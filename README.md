@@ -22,6 +22,12 @@ This will start:
 
 ---
 
+## Docker Hub Repository
+
+ <https://hub.docker.com/r/bry633/module-10-assignment>
+
+---
+
 ## Access Application
 
 FastAPI:
@@ -121,17 +127,20 @@ Results:
 
 The project uses GitHub Actions for automation.
 
-### Pipeline Steps:
+### Pipeline Steps
 
 1: Run Tests  
+
 - Install dependencies  
 - Execute pytest  
 
 2: Security Scan  
+
 - Build Docker image  
 - Scan with Trivy for vulnerabilities  
 
 3: Deploy  
+
 - Log in to Docker Hub  
 - Build and push Docker image  
 
@@ -160,15 +169,7 @@ Image includes:
 
 ## Documentation
 
-- GitHub Actions pipeline screenshots  
-- Docker Hub image screenshots  
-- Test coverage results  
-
----
-
-## Documentation
-
-- [Module9_SQL_Screenshots.pdf](./Module9_Screenshots.pdf) – SQL execution screenshots and Docker setup  
-- [Module9_Reflection.pdf](./Module9_Reflection.pdf) – Reflection on the assignment  
+- [Module10_Screenshots.pdf](./Module10_Screenshots.pdf) – Screenshots of successful execution of GitHub Actions and Docker Hub Repo with deployed application image
+- [Module10_Reflection.pdf](./Module10_Reflection.pdf) – Reflection on the assignment  
 
 ---
