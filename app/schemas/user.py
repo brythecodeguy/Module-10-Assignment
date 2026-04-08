@@ -4,7 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr, ConfigDict
 
 
-class UserResponse(BaseModel):
+class UserRead(BaseModel):
     id: UUID
     username: str
     email: EmailStr
@@ -21,7 +21,7 @@ class UserResponse(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
-    user: UserResponse
+    user: UserRead
 
     model_config = ConfigDict(
         json_schema_extra={

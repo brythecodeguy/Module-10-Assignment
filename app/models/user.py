@@ -11,7 +11,7 @@ from pydantic import ValidationError
 from app.database import Base
 from app.config import settings
 from app.schemas.base import UserCreate
-from app.schemas.user import UserResponse, Token
+from app.schemas.user import UserRead, Token
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -110,7 +110,7 @@ class User(Base):
         user.last_login = datetime.utcnow()
         db.commit()
 
-        user_response = UserResponse.model_validate(user)
+        user_response = UserRead.model_validate(user)
         token_response = Token(
             access_token=cls.create_access_token({"sub": str(user.id)}),
             token_type="bearer",

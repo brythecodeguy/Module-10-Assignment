@@ -1,8 +1,8 @@
-# Module 9
+# Module 10
 
 ## Module Overview
 
-This module works with PostgreSQL in a Dockerized environment and execute raw SQL commands using pgAdmin. The goal was to understand how relational databases function by performing core SQL operations.
+This module builds a full FastAPI application with authentication, database integration, testing, and deployment. The goal was to understand how backend systems are developed, secured, tested, and deployed using modern tools like Docker and CI/CD pipelines.
 
 ---
 
@@ -10,19 +10,24 @@ This module works with PostgreSQL in a Dockerized environment and execute raw SQ
 
 I started the application using:
 
-docker-compose up --build
+```bash
+docker compose up --build
+```
 
 This will start:
 
-- FastAPI application
-- PostgreSQL database
-- pgAdmin interface
+- FastAPI application  
+- PostgreSQL database  
+- pgAdmin interface  
 
 ---
 
-## Access pgAdmin
+## Access Application
 
-Go to:
+FastAPI:
+<http://localhost:8000>
+
+pgAdmin:
 <http://localhost:5050>
 
 Login (based on docker-compose):
@@ -43,79 +48,121 @@ Connect to PostgreSQL using:
 
 ---
 
-## Example SQL Operations
+## Authentication Features
 
-### 1️: Create Tables
+The application includes user authentication using JWT.
 
-```sql
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+### User Registration
 
-CREATE TABLE calculations (
-    id SERIAL PRIMARY KEY,
-    operation VARCHAR(20) NOT NULL,
-    operand_a FLOAT NOT NULL,
-    operand_b FLOAT NOT NULL,
-    result FLOAT NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-```
+- Users can register with:
+  - first name  
+  - last name  
+  - email  
+  - username  
+  - password  
+
+- Passwords are securely hashed using bcrypt.
 
 ---
 
-### 2️: Insert Data
+### User Login
 
-```sql
-INSERT INTO users (username, email)
-VALUES
-('alice', '<alice@example.com>'),
-('bob', '<bob@example.com>');
-
-INSERT INTO calculations (operation, operand_a, operand_b, result, user_id)
-VALUES
-('add', 2, 3, 5, 1),
-('subtract', 10, 4, 6, 1),
-('multiply', 4, 5, 20, 2);
-```
+- Users can log in with username or email  
+- A JWT token is generated upon successful authentication  
+- Token is used to access protected routes  
 
 ---
 
-### 3️: Query Data
+## API Operations
 
-```sql
-SELECT * FROM users;
+### 1: Create User
 
-SELECT * FROM calculations;
-
-SELECT u.username, c.operation, c.result
-FROM calculations c
-JOIN users u ON c.user_id = u.id;
-```
+Handled through the registration logic in the application.
 
 ---
 
-### 4️: Update Data
+### 2: Authenticate User
 
-```sql
-UPDATE calculations
-SET result = 7
-WHERE id = 2;
-```
+- Verifies credentials  
+- Updates last login timestamp  
+- Returns JWT token  
 
 ---
 
-### 5: Delete Data
+### 3: Protected Access
 
-```sql
-DELETE FROM calculations
-WHERE id = 3;
+- Uses dependency injection to verify user tokens  
+- Ensures only authenticated users can access certain routes  
+
+---
+
+## Testing
+
+Run tests using:
+
+```bash
+pytest -q
 ```
+
+Test coverage includes:
+
+- Unit tests  
+- Integration tests  
+- Schema validation tests  
+
+Results:
+
+- 100% test coverage  
+- All tests passed  
+
+---
+
+## CI/CD Pipeline
+
+The project uses GitHub Actions for automation.
+
+### Pipeline Steps:
+
+1: Run Tests  
+- Install dependencies  
+- Execute pytest  
+
+2: Security Scan  
+- Build Docker image  
+- Scan with Trivy for vulnerabilities  
+
+3: Deploy  
+- Log in to Docker Hub  
+- Build and push Docker image  
+
+---
+
+## Docker Image
+
+The application is built and pushed to Docker Hub automatically through CI/CD.
+
+Image includes:
+
+- FastAPI application  
+- Updated secure dependencies  
+- PostgreSQL connection support  
+
+---
+
+## Security
+
+- Passwords are hashed using bcrypt  
+- JWT tokens used for authentication  
+- Dependencies updated to fix vulnerabilities  
+- Trivy scan ensures no high/critical issues  
+
+---
+
+## Documentation
+
+- GitHub Actions pipeline screenshots  
+- Docker Hub image screenshots  
+- Test coverage results  
 
 ---
 
